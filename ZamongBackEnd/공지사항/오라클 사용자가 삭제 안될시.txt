@@ -1,0 +1,7 @@
+select sid,serial#,username,status from v$session where schemaname = 'ZAMONG';
+
+
+
+alter system kill session 'SID,SERIAL#';
+
+ drop user zamong cascade;

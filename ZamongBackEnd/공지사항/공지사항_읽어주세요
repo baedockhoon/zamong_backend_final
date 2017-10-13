@@ -1,0 +1,50 @@
+
+테이블 생성시 규칙!
+
+- 관리자 계정은 ID:zamong 
+           PW:zamong 으로 한다.
+- 시퀀스 생성시 테이블명뒤에 _SEQ를 붙인다
+     예) AD_ADMIN 테이블 시퀀스 → AD_ADMIN_SEQ
+
+- 테이블에 컬럼이 혹시나 변경해야할 경우가 생기면 내용을 팀원들에게 말하고, Notie폴더에 있는 디렉토리 구조도를 업데이트 한다 
+
+
+========== 관리자 접속계정 ===============
+system 접속 후
+
+ CREATE USER zamong IDENTIFIED BY zamong;
+ GRANT CONNECT,RESOURCE TO zamong;
+ conn zamong/zamong
+
+
+ CREATE USER zamong2 IDENTIFIED BY zamong2;
+ GRANT CONNECT,RESOURCE TO zamong2;
+ conn zamong2/zamong2
+========== 관리자 TABLE 만들기 ===============
+
+CREATE TABLE AD_ADMIN
+(
+	AD_NO number NOT NULL,
+	AD_ID varchar2(10) NOT NULL,
+	AD_PASSWORD nvarchar2(20) NOT NULL,
+	AD_DEPARTMENT nvarchar2(20) NOT NULL,
+	AD_REGIDATE date NOT NULL,
+	-- DOMAIN 'S','W','R'
+	AD_PERMITLEVEL char(1) NOT NULL,
+	PRIMARY KEY (AD_NO)
+);
+
+create sequence AD_ADMIN_seq
+nocache
+nocycle;
+
+
+INSERT INTO AD_ADMIN VALUES(AD_ADMIN_seq.NEXTVAL,'zamong','zamong','IT-InfraTeam',SYSDATE,'S');
+INSERT INTO AD_ADMIN VALUES(AD_ADMIN_seq.NEXTVAL,'qwe','qwe','IT-InfraTeam',SYSDATE,'S');
+commit;
+
+※ 권한 S는 Super권한(읽기쓰기삭제 모두가능)
+     W는 Write권한(쓰기만가능, 삭제불가)
+     R은 ReadOnly권한(쓰기삭제 불가)
+
+===============================================

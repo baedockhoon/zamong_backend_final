@@ -1,0 +1,164 @@
+SELECT C.*,NAME FROM ONE_COMMENT C JOIN MEMBER M ON C.ID=M.ID 
+WHERE NO=#{no}
+ORDER BY C_NO DESC
+
+
+
+SELECT M.*,AT_NAME FROM MV_MUSICVIDEO M JOIN AT_ARTIST A ON M.MV_NO=A.AT_NO 
+WHERE A.AT_NO=2
+ORDER BY MV_NO DESC;
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+MA_MUSICAWARD
+------------------------------------------------------------------------------------------------------------------
+뮤직어워드고유번호	MA_NO			NUMBER
+후보고유번호		CA_NO			NUMBER
+어워드제목			MA_TITLE		NVARCHAR 2(100)
+어워드작성날짜		MA_POSTDATE		DATE
+어워드내용			MA_CONTENT		NVARCHAR2(1000)
+종료날짜(End-Day)	MA_REMAININGDAY	DATE
+
+DROP TABLE MA_MUSICAWARD CASCADE CONSTRAINTS;
+DROP sequence MA_MUSICAWARD_SEQ;
+
+CREATE TABLE MA_MUSICAWARD
+(
+	MA_NO number NOT NULL,
+	CA_NO number NOT NULL,
+	MA_TITLE nvarchar2(100) NOT NULL,
+	MA_POSTDATE date NOT NULL,
+	MA_CONTENT nvarchar2(1000) NOT NULL,
+	MA_REMAININGDAY date NOT NULL,
+	PRIMARY KEY (MA_NO)
+);
+
+
+CREATE SEQUENCE MA_MUSICAWARD_SEQ
+NOCACHE
+NOCYCLE;
+
+INSERT INTO MA_MUSICAWARD VALUES(MA_MUSICAWARD_SEQ.NEXTVAL,10,'자몽 주간 인기상 투표',SYSDATE,'자몽 2017년 9월 첫째쭈 주간 인기상 투표',SYSDATE);
+commit;
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+TV_ZAMONGTV
+------------------------------------------------------------------------------------------------------------------
+DROP TABLE TV_ZAMONGTV CASCADE CONSTRAINTS;
+DROP sequence TV_ZAMONGTV_SEQ;
+
+CREATE TABLE TV_ZAMONGTV
+(
+	TV_NO number NOT NULL,
+	SS_NO number NOT NULL,
+	AT_NO number NOT NULL,
+	TV_TITLE nvarchar2(100) NOT NULL,
+	TV_CONTENT nvarchar2(1000) NOT NULL,
+	TV_HITCOUNT number DEFAULT 0,
+	TV_TYPE char(1) NOT NULL,
+	TV_LINK varchar2(300) NOT NULL,
+	TV_POSTDATE date NOT NULL,
+	PRIMARY KEY (TV_NO)
+);
+
+CREATE SEQUENCE TV_ZAMONGTV_SEQ
+NOCACHE
+NOCYCLE;
+
+INSERT INTO TV_ZAMONGTV VALUES(TV_ZAMONGTV_SEQ.NEXTVAL,10,10,'주간아이돌','주간아이돌 방송영상ㅋㅋㅋㅋㅋㅋㅋㅋ',10,'U','<iframe width="560" height="315" src="https://www.youtube.com/embed/WyiIGEHQP8o" frameborder="0" allowfullscreen></iframe>',SYSDATE);
+INSERT INTO TV_ZAMONGTV VALUES(TV_ZAMONGTV_SEQ.NEXTVAL,11,11,'뮤직뱅크','뮤직뱅크영상입니다',11,'U','https://www.youtube.com/embed/WyiIGEHQP8o',SYSDATE);
+commit;
+
+------------------------------------------------------------------------------------------------------------------
+
+
+DROP TABLE AT_ARTIST CASCADE CONSTRAINTS;
+
+CREATE TABLE AT_ARTIST
+(
+	AT_NO number NOT NULL,
+	AT_NAME nvarchar2(30) NOT NULL,
+	AT_BELONGGROUP nvarchar2(30),
+	AT_GROUPORSOLO char(1) NOT NULL,
+	AT_BELONG nvarchar2(20),
+	AT_DEBUTDATE date,
+	AT_DEBUTSONG nvarchar2(30),
+	AT_BIRTH date,
+	AT_CONTRY nvarchar2(20) NOT NULL,
+	AT_GENDER char(1) NOT NULL,
+	AT_ARTISTINFO nvarchar2(1000),
+	PRIMARY KEY (AT_NO)
+);
+
+create sequence at_artist_seq
+nocache
+nocycle;
+
+insert into at_artist values(at_artist_seq.nextval,'볼빨간 사춘기','쇼파르뮤직','G','볼빨간 사춘기','2016.04.22','우주를 줄게','2016.04.22','대한민국','F','서툴고 미숙한 시기, 사춘기라는 이유만으로도 포용할 수 있는 그런 때가 있다.  순수하고 솔직한, 때 타지 않은 말간 감성들을 담아 노래하고픈 볼빨간사춘기. 그대들의 싱그러웠던 사춘기 잔상을 톡톡 튀는 음악으로 전하고자 한다.');
+commit;
+
+
+------------------------------------------------------------------------------------------------------------------
+
+DROP TABLE TV_ZAMONGTV CASCADE CONSTRAINTS;
+DROP SEQUENCE TV_ZAMONGTV_seq
+
+CREATE TABLE TV_ZAMONGTV
+(
+	TV_NO number NOT NULL,
+	TV_REGIDATE date NOT NULL,
+	AT_NO number NOT NULL,
+	TV_TITLE nvarchar2(100) NOT NULL,
+	TV_CONTENT nvarchar2(1000) NOT NULL,
+	TV_LINK varchar2(500) NOT NULL,
+	TV_TYPE char(1) NOT NULL,
+	TV_HITCOUNT number DEFAULT 0 NOT NULL,
+	PRIMARY KEY (TV_NO)
+);
+
+create sequence TV_ZAMONGTV_seq
+nocache
+nocycle;
+
+
+ALTER TABLE TV_ZAMONGTV
+	ADD FOREIGN KEY (AT_NO)
+	REFERENCES AT_ARTIST (AT_NO)
+;
+
+insert into TV_ZAMONGTV values(TV_ZAMONGTV_SEQ.nextval,sysdate,4,'[MV] 남이 될 수 있을까','볼빨간사춘기X스무살 [남이 될 수 있을까] M/V 공개','<iframe width="560" height="315" src="https://www.youtube.com/embed/5c3dWCONhEU" frameborder="0" allowfullscreen></iframe>','M',56);
+
+ALTER TABLE TV_ZAMONGTV RENAME COLUMN TV_CONTENT TO TV_CONTENTS;
+
+
+
+DROP TABLE PG_PROGRAM CASCADE CONSTRAINTS;
+
+CREATE TABLE PG_PROGRAM
+(
+	PG_NO number NOT NULL,
+	PG_REGIDATE date DEFAULT SYSDATE NOT NULL,
+	TV_NO number NOT NULL,
+	PG_NAME nvarchar2(30) NOT NULL,
+	PG_ENDOF char(1) NOT NULL,
+	PRIMARY KEY (PG_NO)
+);
+
+create sequence PG_PROGRAM_seq
+nocache
+nocycle;
+
+ALTER TABLE PG_PROGRAM
+	ADD FOREIGN KEY (TV_NO)
+	REFERENCES TV_ZAMONGTV (TV_NO)
+;
+
+insert into PG_PROGRAM values(PG_PROGRAM_seq.nextval,sysdate,3,'유희열의 스케치북','N');
+
+

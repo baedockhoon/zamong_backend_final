@@ -1,0 +1,34 @@
+DROP TABLE MV_MUSICVIDEO CASCADE CONSTRAINTS;
+
+
+alter table mv_musicvideo add(mv_image varchar(100));
+
+
+CREATE TABLE MV_MUSICVIDEO
+(
+	MV_NO number NOT NULL,
+	MV_REGIDATE date NOT NULL,
+	AT_NO number NOT NULL,
+	SS_NO number NOT NULL,
+	MV_TITLE nvarchar2(100),
+	MV_CONTENTS nvarchar2(2000) NOT NULL,
+	MV_LINK varchar2(500) NOT NULL,
+	MV_HITCOUNT number DEFAULT 0,
+	PRIMARY KEY (MV_NO)
+);
+
+ALTER TABLE MV_MUSICVIDEO
+	ADD FOREIGN KEY (AT_NO)
+	REFERENCES AT_ARTIST (AT_NO)
+;
+
+
+CREATE SEQUENCE MV_MUSICVIDEO_SEQ
+NOCACHE
+NOCYCLE;
+
+
+insert into MV_MUSICVIDEO values(MV_MUSICVIDEO_SEQ.nextval,sysdate,4,2,'[MV] 남이 될 수 있을까','볼빨간사춘기X스무살 [남이 될 수 있을까] M/V 공개','<iframe width="560" height="315" src="https://www.youtube.com/embed/5c3dWCONhEU" frameborder="0" allowfullscreen></iframe>',56);
+
+commit;
+

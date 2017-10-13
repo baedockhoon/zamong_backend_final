@@ -1,0 +1,65 @@
+------------------------------------------------------------------------------------------------------------------
+MA_MUSICAWARD
+------------------------------------------------------------------------------------------------------------------
+뮤직어워드고유번호	MA_NO			NUMBER
+후보고유번호		CA_NO			NUMBER
+어워드제목			MA_TITLE		NVARCHAR 2(100)
+어워드작성날짜		MA_POSTDATE		DATE
+어워드내용			MA_CONTENT		NVARCHAR2(1000)
+종료날짜(End-Day)	MA_REMAININGDAY	DATE
+
+DROP TABLE MA_MUSICAWARD CASCADE CONSTRAINTS;
+DROP sequence MA_MUSICAWARD_SEQ;
+
+CREATE TABLE MA_MUSICAWARD
+(
+	MA_NO number NOT NULL,
+	CA_NO number NOT NULL,
+	MA_TITLE nvarchar2(100) NOT NULL,
+	MA_POSTDATE date NOT NULL,
+	MA_CONTENT nvarchar2(1000) NOT NULL,
+	MA_REMAININGDAY date NOT NULL,
+	PRIMARY KEY (MA_NO)
+);
+
+
+CREATE SEQUENCE MA_MUSICAWARD_SEQ
+NOCACHE
+NOCYCLE;
+
+INSERT INTO MA_MUSICAWARD VALUES(MA_MUSICAWARD_SEQ.NEXTVAL,10,'자몽 주간 인기상 투표',SYSDATE,'자몽 2017년 9월 첫째쭈 주간 인기상 투표',SYSDATE);
+commit;
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+TV_ZAMONGTV
+------------------------------------------------------------------------------------------------------------------
+DROP TABLE TV_ZAMONGTV CASCADE CONSTRAINTS;
+DROP sequence TV_ZAMONGTV_SEQ;
+
+CREATE TABLE TV_ZAMONGTV
+(
+	TV_NO number NOT NULL,
+	SS_NO number NOT NULL,
+	AT_NO number NOT NULL,
+	TV_TITLE nvarchar2(100) NOT NULL,
+	TV_CONTENT nvarchar2(1000) NOT NULL,
+	TV_HITCOUNT number DEFAULT 0,
+	TV_TYPE char(1) NOT NULL,
+	TV_LINK varchar2(300) NOT NULL,
+	TV_POSTDATE date NOT NULL,
+	PRIMARY KEY (TV_NO)
+);
+
+CREATE SEQUENCE TV_ZAMONGTV_SEQ
+NOCACHE
+NOCYCLE;
+
+INSERT INTO TV_ZAMONGTV VALUES(TV_ZAMONGTV_SEQ.NEXTVAL,10,10,'주간아이돌','주간아이돌 방송영상ㅋㅋㅋㅋㅋㅋㅋㅋ',10,'U','<iframe width="560" height="315" src="https://www.youtube.com/embed/WyiIGEHQP8o" frameborder="0" allowfullscreen></iframe>',SYSDATE);
+INSERT INTO TV_ZAMONGTV VALUES(TV_ZAMONGTV_SEQ.NEXTVAL,11,11,'뮤직뱅크','뮤직뱅크영상입니다',11,'U','https://www.youtube.com/embed/WyiIGEHQP8o',SYSDATE);
+commit;
+
+------------------------------------------------------------------------------------------------------------------

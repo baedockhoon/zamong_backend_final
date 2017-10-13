@@ -1,0 +1,40 @@
+alter table ma_musicaward rename column ma_content to ma_contents;
+
+alter table ma_musicaward rename column MA_REMAININGDAY to MA_ENDOFDAY;
+
+SELECT TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') SYS_DATE24 FROM DUAL
+
+SELECT TO_CHAR(ma_endofday, 'YYYYMMDDHH24MISS') SYS_DATE24 FROM ma_musicaward where ma_no=2;
+
+
+-----------------------------------
+SELECT B.*,M.NAME FROM BBS B JOIN MEMBER M ON B.ID=M.ID ORDER BY NO DESC
+
+select c.*,s.ss_title from ca_candidates c join SS_SOUNDSOURCE s on c.ss_no=s.ss_no;
+
+
+SELECT p.Name, v.Name
+FROM Production.Product p
+JOIN Purchasing.ProductVendor pv
+ON p.ProductID = pv.ProductID
+JOIN Purchasing.Vendor v
+ON pv.BusinessEntityID = v.BusinessEntityID
+WHERE ProductSubcategoryID = 15
+ORDER BY v.Name;
+
+select c.*,s.ss_title,at_name,ma_title 
+from ca_candidates c 
+join SS_SOUNDSOURCE s 
+on c.ss_no=s.ss_no
+join AT_artist a
+on c.at_no=a.at_no
+join MA_musicaward m
+on c.ma_no=m.ma_no;
+
+
+
+select ss_no,ss_title,al_albumname 
+from ss_soundsource s
+join al_album a
+on s.al_no=a.al_no
+order by ss_title;
